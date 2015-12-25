@@ -1,6 +1,7 @@
 # Bonjour
 communicate with other iOS devices nearby
 
+[视频demo](http://v.youku.com/v_show/id_XMTQyMzc4Mzc3Mg==.html)
 
 ####使用
 
