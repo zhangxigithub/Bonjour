@@ -1,12 +1,15 @@
 # Bonjour
 communicate with other iOS devices nearby
 
+简单封装使用MultipeerConnectivity,是附近的设备可以通过wifi或者蓝牙传递消息(字符串)
+
+
 [视频demo](http://v.youku.com/v_show/id_XMTQyMzc4Mzc3Mg==.html)
 
+####首先
+引入Bonjour.swift文件
+
 ####使用
-
-
-
 ```swift
 //启动bonjour
 Bonjour.sharedBonjour.bonjour() //默认用设备名 UIDevice.currentDevice().name
@@ -16,7 +19,6 @@ Bonjour.sharedBonjour.bonjour("自定义名称")
 
 
 ####发送消息
-
 ```swift
 Bonjour.sharedBonjour.sendMessage("message")
 ```
