@@ -6,10 +6,10 @@ communicate with other iOS devices nearby
 
 [视频demo](http://v.youku.com/v_show/id_XMTQyMzc4Mzc3Mg==.html)
 
-####首先
+###首先
 引入Bonjour.swift文件
 
-####使用
+###使用
 ```swift
 //启动bonjour
 Bonjour.sharedBonjour.bonjour() //默认用设备名 UIDevice.currentDevice().name
@@ -18,12 +18,12 @@ Bonjour.sharedBonjour.bonjour("自定义名称")
 ```
 
 
-####发送消息
+###发送消息
 ```swift
 Bonjour.sharedBonjour.sendMessage("message")
 ```
 
-接受消息和状态有两种方法，使用其中一种即可。
+###接受消息和状态有两种方法，使用其中一种即可。
 
 #####使用代理(接受消息、获取状态)
 
