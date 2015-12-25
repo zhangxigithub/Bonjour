@@ -18,9 +18,11 @@ Bonjour.sharedBonjour.bonjour("自定义名称")
 
 ```swift
 Bonjour.sharedBonjour.sendMessage("message")
-}
 ```
-####使用代理(接受消息、获取状态)
+
+接受消息和状态有两种方法，使用其中一种即可。
+
+#####使用代理(接受消息、获取状态)
 
 ```swift
 //实现BonjourDelegate
@@ -36,7 +38,7 @@ func didDisconnectPeer(peerID: MCPeerID) {
 //失去连接
 }
 ```
-####使用消息(接受消息、获取状态)
+#####使用消息(接受消息、获取状态)
 
 ```swift
 NSNotificationCenter.defaultCenter().addObserverForName(BonjourDidReceiveMessageNotification, object: nil, queue: NSOperationQueue.mainQueue()) { (notification) -> Void in
