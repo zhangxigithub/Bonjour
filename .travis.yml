@@ -4,7 +4,7 @@ branches:
   only:
     - master
 
-xcode_project: deme/demo.xcodeproj
+xcode_project: demo/demo.xcodeproj
 xcode_scheme: demo
 osx_image: xcode7.2
 
