@@ -10,81 +10,68 @@ import UIKit
 import MultipeerConnectivity
 
 class ViewController: UIViewController,UITextFieldDelegate,BonjourDelegate {
+    func didLost(peerID: MCPeerID) {
+        
+    }
+    
+    func didConnectPeer(peerID: MCPeerID) {
+        
+    }
+    
+    func didDisconnectPeer(peerID: MCPeerID) {
+        
+    }
+    
+    func didReceiveMessage(message: String, peerID: MCPeerID) {
+        
+        let array = message.components(separatedBy: ",")
+        if array.count == 2
+        {
+            let positon = CGPoint(x: CGFloat(Float(array[0]) ?? 0), y: CGFloat(Float(array[1]) ?? 0))
+            self.showCircle(position: positon)
+        }
+    }
+    
 
-    
-    
-    @IBOutlet weak var textView: UITextView!
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-    
-    
+    let bonjour = Bonjour()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        bonjour.delegate = self
+        bonjour.bonjour()
         
-        Bonjour.sharedBonjour.delegate = self
-        Bonjour.sharedBonjour.bonjour()
-        
-        
-        addMessage("我是\(UIDevice.currentDevice().name)")
-        
-        
-
-        NSNotificationCenter.defaultCenter().addObserverForName(UIKeyboardWillShowNotification, object: nil, queue: NSOperationQueue.mainQueue()) { (notification:NSNotification) -> Void in
-            
-            if let endRect = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
-            {
-                UIView.animateWithDuration(0.8, animations: { () -> Void in
-                    self.bottomConstraint.constant = self.view.frame.size.height - endRect.origin.y + 8
-
-                    self.view.layoutIfNeeded()
-                })
-            }
-            
-        }
-        NSNotificationCenter.defaultCenter().addObserverForName(UIKeyboardWillHideNotification, object: nil, queue: NSOperationQueue.mainQueue()) { (notification:NSNotification) -> Void in
-            
-            if let endRect = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
-            {
-                UIView.animateWithDuration(0.8, animations: { () -> Void in
-                    self.bottomConstraint.constant =  self.view.frame.size.height - endRect.origin.y + 8
-                    self.view.layoutIfNeeded()
-                })
-            }
-        }
     }
-
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-
-        if textField.text != nil
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        if let position = touches.first?.location(in: self.view)
         {
-            addMessage("[我]:\(textField.text!)")
-            Bonjour.sharedBonjour.sendMessage(textField.text!)
-            textField.text = ""
+            self.showCircle(position: position)
+            bonjour.sendMessage(message: String(format: "%f,%f", position.x,position.y))
         }
+    }
 
-        return true
-    }
     
     
-    func didReceiveMessage(message: String,peerID:MCPeerID) {
-        addMessage("[\(peerID.displayName)]:\(message)")
-    }
-    func didConnectPeer(peerID: MCPeerID) {
-        addMessage("连接到 \(peerID.displayName)")
-    }
-    func didDisconnectPeer(peerID: MCPeerID) {
-        addMessage("失去连接 \(peerID.displayName)")
-    }
-    
-    
-    
-    
-    
-    func addMessage(message:String)
+    func showCircle(position:CGPoint)
     {
-        self.textView.text =  self.textView.text.stringByAppendingFormat("%@\n", message)
+        let circle    = UIImageView(image: UIImage(named: "circle"))
+        circle.frame  = CGRect(x: 0, y: 0, width: 20, height: 20)
+        circle.center = position
+        
+        self.view.addSubview(circle)
+        UIView.animate(withDuration: 1, animations: {
+            let center = circle.center
+            circle.frame.size.width  = 100
+            circle.frame.size.height = 100
+            circle.center = center
+            circle.alpha  = 0
+        }) { (finish) in
+            circle.removeFromSuperview()
+        }
     }
+    
 }
 

@@ -11,31 +11,23 @@ import MultipeerConnectivity
 
 
 
-let BonjourDidConnectPeerNotification    = "BonjourDidConnectPeerNotification"
-let BonjourDidDisconnectPeerNotification = "BonjourDidDisconnectPeerNotification"
-let BonjourDidReceiveMessageNotification = "BonjourDidReceiveMessageNotification"
-
 let BonjourNotificationPeerKey           = "BonjourNotificationPeerKey"
 let BonjourNotificationMessageKey        = "BonjourNotificationMessageKey"
 
 
 
-@objc protocol BonjourDelegate
+protocol BonjourDelegate
 {
-    optional func didConnectPeer(peerID:MCPeerID)
-    optional func didDisconnectPeer(peerID:MCPeerID)
-    optional func didReceiveMessage(message:String,peerID:MCPeerID)
+    func didConnectPeer(peerID:MCPeerID)
+    func didDisconnectPeer(peerID:MCPeerID)
+    func didReceiveMessage(message:String,peerID:MCPeerID)
+    func didLost(peerID:MCPeerID)
 }
 
 
 
-class Bonjour: NSObject,MCSessionDelegate,MCNearbyServiceAdvertiserDelegate,MCNearbyServiceBrowserDelegate{
-    
-    
-    static let sharedBonjour: Bonjour = {
-        return Bonjour()
-    }()
-    
+class Bonjour : NSObject,MCSessionDelegate,MCNearbyServiceBrowserDelegate,MCNearbyServiceAdvertiserDelegate
+{
     var delegate:BonjourDelegate?
     
     
@@ -52,7 +44,7 @@ class Bonjour: NSObject,MCSessionDelegate,MCNearbyServiceAdvertiserDelegate,MCNe
         
         if name == nil
         {
-            peerID = MCPeerID(displayName: UIDevice.currentDevice().name)
+            peerID = MCPeerID(displayName: UIDevice.current.name)
         }else
         {
             peerID = MCPeerID(displayName: name!)
@@ -74,31 +66,59 @@ class Bonjour: NSObject,MCSessionDelegate,MCNearbyServiceAdvertiserDelegate,MCNe
         session.delegate = self
     }
     
-    func sendMessage(message:String,mode:MCSessionSendDataMode = MCSessionSendDataMode.Reliable)
+    func sendMessage(message:String,mode:MCSessionSendDataMode = MCSessionSendDataMode.reliable)
     {
         do {
-            let data = message.dataUsingEncoding(NSUTF8StringEncoding)!
-            try session.sendData(data, toPeers:session.connectedPeers, withMode: mode)
+            if let data = message.data(using: .utf8)
+            {
+                try session.send(data, toPeers: session.connectedPeers, with: mode)
+            }
         }
-        catch
-        {
-        }
+        catch{}
     }
 
     
-
-    //MARK: - MCNearbyServiceAdvertiserDelegate
+    func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
+        browser.invitePeer(peerID, to: session, withContext: nil, timeout: 20)
+    }
     
-    func advertiser(advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: NSData?, invitationHandler: (Bool, MCSession) -> Void)
-    {
+    func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
+        self.delegate?.didLost(peerID: peerID)
+    }
+    
+    func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
+    
         invitationHandler(true,session)
     }
     
-    func advertiser(advertiser: MCNearbyServiceAdvertiser, didNotStartAdvertisingPeer error: NSError)
-    {
+    func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
+    
     }
     
+    func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
+        DispatchQueue.main.async {
+            if let message = String(data: data, encoding: .utf8)
+            {
+                self.delegate?.didReceiveMessage(message: message, peerID: peerID)
+            }
+        }
+    }
     
+    func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
+    }
+    
+    func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
+    
+    }
+    
+    func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
+    
+    }
+
+}
+
+
+ /*
     
     //MARK: - MCNearbyServiceBrowserDelegate
     
@@ -124,14 +144,12 @@ class Bonjour: NSObject,MCSessionDelegate,MCNearbyServiceAdvertiserDelegate,MCNe
 
             dispatch_async(dispatch_get_main_queue()) { () -> Void in
                 self.delegate?.didDisconnectPeer?(peerID)
-                NSNotificationCenter.defaultCenter().postNotificationName(BonjourDidDisconnectPeerNotification, object: nil, userInfo: [BonjourNotificationPeerKey : peerID])
             }
         case .Connecting:
             break
         case .Connected:
             dispatch_async(dispatch_get_main_queue()) { () -> Void in
                 self.delegate?.didConnectPeer?(peerID)
-                NSNotificationCenter.defaultCenter().postNotificationName(BonjourDidConnectPeerNotification, object: nil, userInfo: [BonjourNotificationPeerKey : peerID])
             }
 
         }
@@ -143,19 +161,10 @@ class Bonjour: NSObject,MCSessionDelegate,MCNearbyServiceAdvertiserDelegate,MCNe
             if let message = String(data: data, encoding: NSUTF8StringEncoding)
             {
                 self.delegate?.didReceiveMessage?(message, peerID: peerID)
-                NSNotificationCenter.defaultCenter().postNotificationName(BonjourDidConnectPeerNotification, object: nil, userInfo: [BonjourNotificationPeerKey : peerID,BonjourNotificationMessageKey:message])
             }
         }
 
     }
-    func session(session: MCSession, didReceiveStream stream: NSInputStream, withName streamName: String, fromPeer peerID: MCPeerID)
-    {
-    }
-    func session(session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, withProgress progress: NSProgress)
-    {
-    }
-    func session(session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, atURL localURL: NSURL, withError error: NSError?)
-    {
-    }
 
-}
+*/
+

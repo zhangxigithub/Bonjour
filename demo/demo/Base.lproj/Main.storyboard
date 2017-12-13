@@ -1,53 +1,25 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="demo" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="开始扫描... " textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="rJh-pB-IDg">
-                                <rect key="frame" x="0.0" y="20" width="600" height="534"/>
-                                <color key="backgroundColor" red="0.20784313730000001" green="0.64705882349999999" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="j0B-Pi-Y9a">
-                                <rect key="frame" x="8" y="562" width="584" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="kmv-gm-KaL"/>
-                                </connections>
-                            </textField>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="j0B-Pi-Y9a" secondAttribute="trailing" constant="8" id="2lz-Yx-BSH"/>
-                            <constraint firstItem="rJh-pB-IDg" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="20" id="3eF-QD-Id3"/>
-                            <constraint firstItem="j0B-Pi-Y9a" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="8" id="HUv-wi-46J"/>
-                            <constraint firstItem="j0B-Pi-Y9a" firstAttribute="top" secondItem="rJh-pB-IDg" secondAttribute="bottom" constant="8" id="JQX-uj-e6j"/>
-                            <constraint firstItem="rJh-pB-IDg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="YhQ-Qw-3Lz"/>
-                            <constraint firstAttribute="trailing" secondItem="rJh-pB-IDg" secondAttribute="trailing" id="jav-sS-jVf"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="j0B-Pi-Y9a" secondAttribute="bottom" constant="8" id="nar-Yy-ZKn"/>
-                        </constraints>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="bls-6l-Hro"/>
                     </view>
-                    <connections>
-                        <outlet property="bottomConstraint" destination="nar-Yy-ZKn" id="hxG-iE-KLt"/>
-                        <outlet property="textView" destination="rJh-pB-IDg" id="gFb-hz-dV3"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
