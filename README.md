@@ -4,6 +4,8 @@ communicate with other iOS devices nearby
 简单封装使用MultipeerConnectivity,是附近的设备可以通过wifi或者蓝牙传递消息(字符串)
 
 
+![img](https://github.com/zhangxigithub/Bonjour/blob/master/demo.gif?raw=true)
+
 [视频demo](http://v.youku.com/v_show/id_XMTQyMzc4Mzc3Mg==.html)
 
 ###首先
